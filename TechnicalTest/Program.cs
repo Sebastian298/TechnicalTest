@@ -1,5 +1,7 @@
 using TechnicalTest.Attributes;
+using TechnicalTest.Data;
 using TechnicalTest.Middlewares;
+using TechnicalTest.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +17,8 @@ builder.Services.AddCors(options =>
         policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
-
+builder.Services.AddScoped<DapperContext>();
+builder.Services.AddScoped<IDapperService,DapperService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
