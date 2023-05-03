@@ -1,6 +1,8 @@
 ﻿using Dapper;
+using Newtonsoft.Json.Linq;
 using System.Data;
 using TechnicalTest.Data;
+using TechnicalTest.Models.Responses;
 using TechnicalTest.Models.Services;
 
 namespace TechnicalTest.Services
@@ -13,14 +15,15 @@ namespace TechnicalTest.Services
         {
             _context = context;
         }
-        public async Task<dynamic> ExecuteStoredProcedureAsync<T>(StoredProcedureData qData, DynamicParameters parameters, bool hasArray = false)
+        public async Task<ServiceResponse> ExecuteStoredProcedureAsync<T>(StoredProcedureData qData, DynamicParameters parameters, bool hasArray = false)
         {
             try
             {
+                dynamic response;
                 var spName = $"{qData.SchemaName}.{qData.Name}";
                 using (IDbConnection connection = _context.CreateConnection(qData.IdConnectionString))
                 {
-                    dynamic response;
+                    
                     if (hasArray)
                     {
                         response = await connection.QueryAsync<T>(spName, parameters, commandType: CommandType.StoredProcedure);
@@ -31,13 +34,19 @@ namespace TechnicalTest.Services
                         response = await connection.QuerySingleOrDefaultAsync<T>(spName, parameters, commandType: CommandType.StoredProcedure);
                     }
 
-                    return response;
+                    return new ServiceResponse
+                    {
+                        Results = response
+                    };
                 }
             }
             catch (Exception ex)
             {
-
-                throw new Exception("Se produjo un error al ejecutar el stored procedure", ex);
+                return new ServiceResponse
+                {
+                    HasError = true,
+                    Message = ex.Message,
+                };
             }
         }
     }
