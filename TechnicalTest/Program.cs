@@ -1,6 +1,5 @@
 using TechnicalTest.Attributes;
 using TechnicalTest.Data;
-using TechnicalTest.Middlewares;
 using TechnicalTest.Repositories;
 using TechnicalTest.Services;
 
