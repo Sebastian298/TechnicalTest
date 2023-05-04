@@ -28,4 +28,11 @@ namespace TechnicalTest.Models.BusinessLogic
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public bool Active { get; set; }
     }
+
+    public class VacancyDelete
+    {
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [RegularExpression(@"^[1-9]\d*$", ErrorMessage = "El campo {0} debe ser un número entero positivo.")]
+        public int Id { get; set; }
+    }
 }

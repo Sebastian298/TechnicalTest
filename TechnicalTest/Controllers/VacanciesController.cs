@@ -60,5 +60,20 @@ namespace TechnicalTest.Controllers
                 return StatusCode(500, new { StatusCode = 500, Message = message });
             }
         }
+
+        [HttpPost("delete")]
+        public async Task<IActionResult> DeleteVacancy(VacancyDelete vacancy)
+        {
+            try
+            {
+                var result = await _vacancyRepository.DeleteVacancyAsync(vacancy);
+                return StatusCode(result.StatusCode, result);
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return StatusCode(500, new { StatusCode = 500, Message = message });
+            }
+        }
     }
 }

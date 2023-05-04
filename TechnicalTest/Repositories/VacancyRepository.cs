@@ -24,7 +24,9 @@ namespace TechnicalTest.Repositories
             try
             {
                 var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "StoredProceduresSettings:VacancyRepository:GetAll:Data");
-                var result = await _service.ExecuteStoredProcedureAsync<Vacancy>(spData, null, true);
+                var parameters = new DynamicParameters();
+                parameters.Add("Option", 1, DbType.Int64);
+                var result = await _service.ExecuteStoredProcedureAsync<Vacancy>(spData, parameters, true);
                 if (result.HasError)
                 {
                     var error = MessageErrorBuilder.GenerateError(result.Message);
@@ -97,7 +99,37 @@ namespace TechnicalTest.Repositories
                 }
                 return new GenericResponse<GenericCrud>()
                 {
-                    StatusCode = 201,
+                    StatusCode = 200,
+                    Content = result.Results
+                };
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = message };
+            }
+        }
+
+        public async Task<GenericResponse<GenericCrud>> DeleteVacancyAsync(VacancyDelete vacancy)
+        {
+            try
+            {
+                var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "StoredProceduresSettings:VacancyRepository:Delete:Data");
+                var parameters = new DynamicParameters();
+                parameters.Add("vacancyId", vacancy.Id, DbType.Int64);
+                var result = await _service.ExecuteStoredProcedureAsync<GenericCrud>(spData, parameters);
+                if (result.HasError)
+                {
+                    var error = MessageErrorBuilder.GenerateError(result.Message);
+                    return new GenericResponse<GenericCrud>()
+                    {
+                        StatusCode = 500,
+                        Message = error
+                    };
+                }
+                return new GenericResponse<GenericCrud>()
+                {
+                    StatusCode = 200,
                     Content = result.Results
                 };
             }
