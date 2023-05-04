@@ -59,5 +59,20 @@ namespace TechnicalTest.Controllers
                 return StatusCode(500, new { StatusCode = 500, Message = message });
             }
         }
+
+        [HttpPost("delete")]
+        public async Task<IActionResult> DeleteProspect(ProspectDelete prospect)
+        {
+            try
+            {
+                var result = await _prospectRepository.DeleteProspectAsync(prospect);
+                return StatusCode(result.StatusCode, result);
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return StatusCode(500, new { StatusCode = 500, Message = message });
+            }
+        }
     }
 }
