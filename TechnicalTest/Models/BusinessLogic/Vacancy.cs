@@ -16,7 +16,16 @@ namespace TechnicalTest.Models.BusinessLogic
         [RegularExpression(@"^[a-zA-Z'áéíóúÁÉÍÓÚ\s]*$", ErrorMessage = "El campo {0} debe contener solamente letras y el carácter ' (acento).")]
         public string Area { get; set; }
         [Required(ErrorMessage ="El campo {0} es obligatorio")]
-        [RegularExpression(@"^[0-9]+(\.[0-9]*)?$", ErrorMessage = "El campo Precio debe ser un número decimal positivo.")]
+        [RegularExpression(@"^[0-9]+(\.[0-9]*)?$", ErrorMessage = "El campo {0} debe ser un número decimal positivo.")]
         public double Salary { get; set; }
+    }
+
+    public class VacancyUpdate : VacancyCreate
+    {
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [RegularExpression(@"^[1-9]\d*$", ErrorMessage = "El campo {0} debe ser un número entero positivo.")]
+        public int Id { get; set; }
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        public bool Active { get; set; }
     }
 }

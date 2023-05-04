@@ -45,5 +45,20 @@ namespace TechnicalTest.Controllers
                 return StatusCode(500, new { StatusCode = 500, Message = message });
             }
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateVacancy(VacancyUpdate vacancy)
+        {
+            try
+            {
+                var result = await _vacancyRepository.UpdateVacancyAsync(vacancy);
+                return StatusCode(result.StatusCode, result);
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return StatusCode(500, new { StatusCode = 500, Message = message });
+            }
+        }
     }
 }

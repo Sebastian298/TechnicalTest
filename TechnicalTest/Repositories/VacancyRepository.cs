@@ -68,10 +68,43 @@ namespace TechnicalTest.Repositories
                     Content = result.Results
                 };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = message };
+            }
+        }
 
-                throw;
+        public async Task<GenericResponse<GenericCrud>> UpdateVacancyAsync(VacancyUpdate vacancy)
+        {
+            try
+            {
+                var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "StoredProceduresSettings:VacancyRepository:Update:Data");
+                var parameters = new DynamicParameters();
+                parameters.Add("vacancyId", vacancy.Id, DbType.Int64);
+                parameters.Add("area", vacancy.Area, DbType.String);
+                parameters.Add("salary", vacancy.Salary, DbType.Decimal);
+                parameters.Add("active", vacancy.Active, DbType.Boolean);
+                var result = await _service.ExecuteStoredProcedureAsync<GenericCrud>(spData, parameters);
+                if (result.HasError)
+                {
+                    var error = MessageErrorBuilder.GenerateError(result.Message);
+                    return new GenericResponse<GenericCrud>()
+                    {
+                        StatusCode = 500,
+                        Message = error
+                    };
+                }
+                return new GenericResponse<GenericCrud>()
+                {
+                    StatusCode = 201,
+                    Content = result.Results
+                };
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = message };
             }
         }
     }
