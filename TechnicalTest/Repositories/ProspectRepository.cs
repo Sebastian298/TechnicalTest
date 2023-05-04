@@ -17,6 +17,7 @@ namespace TechnicalTest.Repositories
             _configuration = configuration;
             _service = dapperService;
         }
+
         public async Task<GenericResponse<List<Prospect>>> GetAllProspectsAsync()
         {
             try
@@ -38,6 +39,38 @@ namespace TechnicalTest.Repositories
             {
                 var message = MessageErrorBuilder.GenerateError(ex.Message);
                 return new GenericResponse<List<Prospect>>() { StatusCode = 500, Message = message };
+            }
+        }
+
+        public async Task<GenericResponse<GenericCrud>> CreateProspectAsync(ProspectCreate prospect)
+        {
+            try
+            {
+                var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "StoredProceduresSettings:ProspectRepository:Create:Data");
+                var parameters = new DynamicParameters();
+                parameters.Add("name", prospect.Name, DbType.String);
+                parameters.Add("email", prospect.Email, DbType.String);
+                parameters.Add("registeredDate", DateTime.Now, DbType.DateTime);
+                var result = await _service.ExecuteStoredProcedureAsync<GenericCrud>(spData, parameters);
+                if (result.HasError)
+                {
+                    var error = MessageErrorBuilder.GenerateError(result.Message);
+                    return new GenericResponse<GenericCrud>()
+                    {
+                        StatusCode = 500,
+                        Message = error
+                    };
+                }
+                return new GenericResponse<GenericCrud>()
+                {
+                    StatusCode = 201,
+                    Content = result.Results
+                };
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = message };
             }
         }
     }
