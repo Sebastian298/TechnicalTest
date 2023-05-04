@@ -44,5 +44,20 @@ namespace TechnicalTest.Controllers
                 return StatusCode(500, new { StatusCode = 500, Message = message });
             }
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateProspect(ProspectUpdate prospect)
+        {
+            try
+            {
+                var result = await _prospectRepository.UpdateProspectAsync(prospect);
+                return StatusCode(result.StatusCode, result);
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return StatusCode(500, new { StatusCode = 500, Message = message });
+            }
+        }
     }
 }

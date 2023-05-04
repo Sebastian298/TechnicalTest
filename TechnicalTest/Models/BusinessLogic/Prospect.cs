@@ -18,4 +18,11 @@ namespace TechnicalTest.Models.BusinessLogic
         [EmailAddress(ErrorMessage = "El campo {0} debe tener un formato de correo electrónico válido.")]
         public string Email { get; set; }
     }
+
+    public class ProspectUpdate : ProspectCreate
+    {
+        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
+        [RegularExpression(@"^[1-9]\d*$", ErrorMessage = "El campo {0} debe ser un número entero positivo.")]
+        public int Id { get; set; }
+    }
 }
