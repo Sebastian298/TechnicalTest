@@ -46,6 +46,33 @@ namespace TechnicalTest.Repositories
             }
         }
 
+        public async Task<GenericResponse<List<VacancyActive>>> GetVacancyActiveAsync()
+        {
+            try
+            {
+                var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "StoredProceduresSettings:VacancyRepository:GetAll:Data");
+                var parameters = new DynamicParameters();
+                parameters.Add("Option", 2, DbType.Int64);
+                var result = await _service.ExecuteStoredProcedureAsync<VacancyActive>(spData, parameters, true);
+                if (result.HasError)
+                {
+                    var error = MessageErrorBuilder.GenerateError(result.Message);
+                    return new GenericResponse<List<VacancyActive>>() { StatusCode = 500, Message = error };
+                }
+                return new GenericResponse<List<VacancyActive>>()
+                {
+                    StatusCode = 200,
+                    Content = result.Results
+                };
+
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return new GenericResponse<List<VacancyActive>>() { StatusCode = 500, Message = message };
+            }
+        }
+
         public async Task<GenericResponse<GenericCrud>> CreateVacancyAsync(VacancyCreate vacancy)
         {
             try

@@ -15,7 +15,7 @@ namespace TechnicalTest.Models.BusinessLogic
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         [RegularExpression(@"^[a-zA-Z'áéíóúÁÉÍÓÚ\s]*$", ErrorMessage = "El campo {0} debe contener solamente letras y el carácter ' (acento).")]
         public string Area { get; set; }
-        [Required(ErrorMessage ="El campo {0} es obligatorio")]
+        [Required(ErrorMessage = "El campo {0} es obligatorio")]
         [RegularExpression(@"^[0-9]+(\.[0-9]*)?$", ErrorMessage = "El campo {0} debe ser un número decimal positivo.")]
         public double Salary { get; set; }
     }
@@ -34,5 +34,11 @@ namespace TechnicalTest.Models.BusinessLogic
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         [RegularExpression(@"^[1-9]\d*$", ErrorMessage = "El campo {0} debe ser un número entero positivo.")]
         public int Id { get; set; }
+    }
+
+    public class VacancyActive
+    {
+        public int Id { get; set; }
+        public string Area { get; set; }
     }
 }
