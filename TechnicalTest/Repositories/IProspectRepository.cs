@@ -8,5 +8,6 @@ namespace TechnicalTest.Repositories
         Task<GenericResponse<List<Prospect>>> GetAllProspectsAsync();
         Task<GenericResponse<GenericCrud>> CreateProspectAsync(ProspectCreate prospect);
         Task<GenericResponse<GenericCrud>> UpdateProspectAsync(ProspectUpdate prospect);
+        Task<GenericResponse<GenericCrud>> DeleteProspectAsync(ProspectDelete prospect);
     }
 }
