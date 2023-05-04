@@ -41,7 +41,6 @@ namespace TechnicalTest.Repositories
                 return new GenericResponse<List<Prospect>>() { StatusCode = 500, Message = message };
             }
         }
-
         public async Task<GenericResponse<GenericCrud>> CreateProspectAsync(ProspectCreate prospect)
         {
             try
@@ -64,6 +63,37 @@ namespace TechnicalTest.Repositories
                 return new GenericResponse<GenericCrud>()
                 {
                     StatusCode = 201,
+                    Content = result.Results
+                };
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = message };
+            }
+        }
+        public async Task<GenericResponse<GenericCrud>> UpdateProspectAsync(ProspectUpdate prospect)
+        {
+            try
+            {
+                var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "StoredProceduresSettings:ProspectRepository:Update:Data");
+                var parameters = new DynamicParameters();
+                parameters.Add("prospectId", prospect.Id, DbType.Int64);
+                parameters.Add("name", prospect.Name, DbType.String);
+                parameters.Add("email", prospect.Email, DbType.String);
+                var result = await _service.ExecuteStoredProcedureAsync<GenericCrud>(spData, parameters);
+                if (result.HasError)
+                {
+                    var error = MessageErrorBuilder.GenerateError(result.Message);
+                    return new GenericResponse<GenericCrud>()
+                    {
+                        StatusCode = 500,
+                        Message = error
+                    };
+                }
+                return new GenericResponse<GenericCrud>()
+                {
+                    StatusCode = 200,
                     Content = result.Results
                 };
             }
