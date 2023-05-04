@@ -6,5 +6,6 @@ namespace TechnicalTest.Repositories
     public interface IProspectRepository
     {
         Task<GenericResponse<List<Prospect>>> GetAllProspectsAsync();
+        Task<GenericResponse<GenericCrud>> CreateProspectAsync(ProspectCreate prospect);
     }
 }
