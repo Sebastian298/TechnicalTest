@@ -12,6 +12,8 @@ namespace TechnicalTest.Attributes
 
             var errorSerialized = string.Join(" | ", modelStateEntries.Select(x => x.Value?.Errors.FirstOrDefault()?.ErrorMessage));
             dynamic response = new JObject();
+            response.title = "";
+            response.type = "warning";
             response.message = "Verifique el formato de entrada";
             response.exceptionMessage = errorSerialized;
             var genericResponse = new GenericResponse<JObject>
