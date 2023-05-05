@@ -21,6 +21,7 @@ builder.Services.AddScoped<DapperContext>();
 builder.Services.AddScoped<IDapperService,DapperService>();
 builder.Services.AddScoped<IVacancyRepository,VacancyRepository>();
 builder.Services.AddScoped<IProspectRepository,ProspectRepository>();
+builder.Services.AddScoped<IInterviewRepository,InterviewRepository>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
