@@ -17,6 +17,7 @@ namespace TechnicalTest.Repositories
             _configuration = configuration;
             _dapperService = dapperService;
         }
+
         public async Task<GenericResponse<List<Interview>>> GetAllInterviewsAsync()
         {
             try
@@ -39,6 +40,41 @@ namespace TechnicalTest.Repositories
 
                 var message = MessageErrorBuilder.GenerateError(ex.Message);
                 return new GenericResponse<List<Interview>>() { StatusCode = 500, Message = message };
+            }
+        }
+        public async Task<GenericResponse<GenericCrud>> CreateInterviewAsync(InterviewCreate interview)
+        {
+            try
+            {
+                var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "StoredProceduresSettings:InterviewRepository:Create:Data");
+                
+                var parameters = new DynamicParameters();
+                parameters.Add("vacancyId", interview.VacancyId, DbType.Int64);
+                parameters.Add("prospectId", interview.ProspectId, DbType.Int64);
+                parameters.Add("interviewDate", interview.InterviewDate, DbType.Date);
+                parameters.Add("notes", interview.Notes, DbType.String);
+               
+                var result = await _dapperService.ExecuteStoredProcedureAsync<GenericCrud>(spData, parameters);
+
+                if (result.HasError)
+                {
+                    var error = MessageErrorBuilder.GenerateError(result.Message);
+                    return new GenericResponse<GenericCrud>()
+                    {
+                        StatusCode = 500,
+                        Message = error
+                    };
+                }
+                return new GenericResponse<GenericCrud>()
+                {
+                    StatusCode = 201,
+                    Content = result.Results
+                };
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = message };
             }
         }
     }
