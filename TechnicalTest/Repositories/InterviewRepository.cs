@@ -77,5 +77,72 @@ namespace TechnicalTest.Repositories
                 return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = message };
             }
         }
+        public async Task<GenericResponse<GenericCrud>> UpdateInterviewAsync(InterviewUpdate interview)
+        {
+            try
+            {
+                var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "StoredProceduresSettings:InterviewRepository:Update:Data");
+
+                var parameters = new DynamicParameters();
+                parameters.Add("interviewId", interview.InterviewId, DbType.Int64);
+                parameters.Add("interviewDate", interview.InterviewDate, DbType.Date);
+                parameters.Add("notes", interview.Notes, DbType.String);
+                parameters.Add("recruited", interview.Recruited, DbType.Boolean);
+
+                var result = await _dapperService.ExecuteStoredProcedureAsync<GenericCrud>(spData, parameters);
+
+                if (result.HasError)
+                {
+                    var error = MessageErrorBuilder.GenerateError(result.Message);
+                    return new GenericResponse<GenericCrud>()
+                    {
+                        StatusCode = 500,
+                        Message = error
+                    };
+                }
+                return new GenericResponse<GenericCrud>()
+                {
+                    StatusCode = 201,
+                    Content = result.Results
+                };
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = message };
+            }
+        }
+        public async Task<GenericResponse<GenericCrud>> DeleteInterviewAsync(int id)
+        {
+            try
+            {
+                var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "StoredProceduresSettings:InterviewRepository:Delete:Data");
+
+                var parameters = new DynamicParameters();
+                parameters.Add("interviewId", id, DbType.Int64);
+
+                var result = await _dapperService.ExecuteStoredProcedureAsync<GenericCrud>(spData, parameters);
+
+                if (result.HasError)
+                {
+                    var error = MessageErrorBuilder.GenerateError(result.Message);
+                    return new GenericResponse<GenericCrud>()
+                    {
+                        StatusCode = 500,
+                        Message = error
+                    };
+                }
+                return new GenericResponse<GenericCrud>()
+                {
+                    StatusCode = 201,
+                    Content = result.Results
+                };
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = message };
+            }
+        }
     }
 }

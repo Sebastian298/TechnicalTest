@@ -43,5 +43,35 @@ namespace TechnicalTest.Controllers
                 return StatusCode(500, new { StatusCode = 500, Message = message });
             }
         }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateInterview(InterviewUpdate interview)
+        {
+            try
+            {
+                var result = await _interviewRepository.UpdateInterviewAsync(interview);
+                return StatusCode(result.StatusCode, result);
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return StatusCode(500, new { StatusCode = 500, Message = message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteInterview(int interviewId)
+        {
+            try
+            {
+                var result = await _interviewRepository.DeleteInterviewAsync(interviewId);
+                return StatusCode(result.StatusCode, result);
+            }
+            catch (Exception ex)
+            {
+                var message = MessageErrorBuilder.GenerateError(ex.Message);
+                return StatusCode(500, new { StatusCode = 500, Message = message });
+            }
+        }
     }
 }

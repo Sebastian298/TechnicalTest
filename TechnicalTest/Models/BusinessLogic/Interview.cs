@@ -26,4 +26,12 @@ namespace TechnicalTest.Models.BusinessLogic
         [RegularExpression(@"^[a-zA-Z'áéíóúÁÉÍÓÚ\s]*$", ErrorMessage = "El campo {0} debe contener solamente letras y el carácter ' (acento).")]
         public string Notes { get; set; }
     }
+
+    public class InterviewUpdate
+    {
+        public int InterviewId { get; set; }
+        public DateTime InterviewDate { get; set; }
+        public string Notes { get; set; }
+        public bool Recruited { get; set; }
+    }
 }

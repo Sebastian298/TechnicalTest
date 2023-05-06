@@ -7,5 +7,7 @@ namespace TechnicalTest.Repositories
     {
         Task<GenericResponse<List<Interview>>> GetAllInterviewsAsync();
         Task<GenericResponse<GenericCrud>> CreateInterviewAsync(InterviewCreate interview);
+        Task<GenericResponse<GenericCrud>> UpdateInterviewAsync(InterviewUpdate interview);
+        Task<GenericResponse<GenericCrud>> DeleteInterviewAsync(int id);
     }
 }
