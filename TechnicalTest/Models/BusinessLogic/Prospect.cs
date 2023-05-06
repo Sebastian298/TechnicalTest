@@ -21,15 +21,5 @@ namespace TechnicalTest.Models.BusinessLogic
 
     public class ProspectUpdate : ProspectCreate
     {
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        [RegularExpression(@"^[1-9]\d*$", ErrorMessage = "El campo {0} debe ser un número entero positivo.")]
-        public int Id { get; set; }
-    }
-
-    public class ProspectDelete
-    {
-        [Required(ErrorMessage = "El campo {0} es obligatorio.")]
-        [RegularExpression(@"^[1-9]\d*$", ErrorMessage = "El campo {0} debe ser un número entero positivo.")]
-        public int Id { get; set; }
     }
 }
