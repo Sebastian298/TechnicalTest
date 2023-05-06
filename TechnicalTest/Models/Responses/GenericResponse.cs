@@ -3,7 +3,7 @@
     public class GenericResponse<T>
     {
         public int StatusCode { get; set; }
-        public T Content { get; set; }
+        public T Content { get; set; } = default;
         public GenericResponseData Message { get; set; }
     }
 

@@ -77,14 +77,14 @@ namespace TechnicalTest.Repositories
                 return new GenericResponse<GenericCrud>() { StatusCode = 500, Message = message };
             }
         }
-        public async Task<GenericResponse<GenericCrud>> UpdateInterviewAsync(InterviewUpdate interview)
+        public async Task<GenericResponse<GenericCrud>> UpdateInterviewAsync(int id,InterviewUpdate interview)
         {
             try
             {
                 var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "StoredProceduresSettings:InterviewRepository:Update:Data");
 
                 var parameters = new DynamicParameters();
-                parameters.Add("interviewId", interview.InterviewId, DbType.Int64);
+                parameters.Add("interviewId", id, DbType.Int64);
                 parameters.Add("interviewDate", interview.InterviewDate, DbType.Date);
                 parameters.Add("notes", interview.Notes, DbType.String);
                 parameters.Add("recruited", interview.Recruited, DbType.Boolean);

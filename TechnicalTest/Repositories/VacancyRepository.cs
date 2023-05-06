@@ -104,13 +104,13 @@ namespace TechnicalTest.Repositories
             }
         }
 
-        public async Task<GenericResponse<GenericCrud>> UpdateVacancyAsync(VacancyUpdate vacancy)
+        public async Task<GenericResponse<GenericCrud>> UpdateVacancyAsync(int id,VacancyUpdate vacancy)
         {
             try
             {
                 var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "StoredProceduresSettings:VacancyRepository:Update:Data");
                 var parameters = new DynamicParameters();
-                parameters.Add("vacancyId", vacancy.Id, DbType.Int64);
+                parameters.Add("vacancyId",id, DbType.Int64);
                 parameters.Add("area", vacancy.Area, DbType.String);
                 parameters.Add("salary", vacancy.Salary, DbType.Decimal);
                 parameters.Add("active", vacancy.Active, DbType.Boolean);
@@ -137,13 +137,13 @@ namespace TechnicalTest.Repositories
             }
         }
 
-        public async Task<GenericResponse<GenericCrud>> DeleteVacancyAsync(VacancyDelete vacancy)
+        public async Task<GenericResponse<GenericCrud>> DeleteVacancyAsync(int id)
         {
             try
             {
                 var spData = JsonReader.GetConfigurationStoredProcedure(_configuration, "StoredProceduresSettings:VacancyRepository:Delete:Data");
                 var parameters = new DynamicParameters();
-                parameters.Add("vacancyId", vacancy.Id, DbType.Int64);
+                parameters.Add("vacancyId", id, DbType.Int64);
                 var result = await _service.ExecuteStoredProcedureAsync<GenericCrud>(spData, parameters);
                 if (result.HasError)
                 {

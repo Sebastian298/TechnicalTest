@@ -11,12 +11,14 @@ namespace TechnicalTest.Attributes
             var modelStateEntries = context.ModelState.Where(x => x.Value?.Errors.Count > 0);
 
             var errorSerialized = string.Join(" | ", modelStateEntries.Select(x => x.Value?.Errors.FirstOrDefault()?.ErrorMessage));
-            dynamic response = new JObject();
-            response.title = "";
-            response.type = "warning";
-            response.message = "Verifique el formato de entrada";
-            response.exceptionMessage = errorSerialized;
-            var genericResponse = new GenericResponse<JObject>
+            var response = new AttributeResponse()
+            {
+                Title = "Error",
+                Type="warning",
+                Message="Verifique el formato de entrada",
+                ExceptionMessage=errorSerialized
+            };
+            var genericResponse = new GenericResponse<AttributeResponse>
             {
                 StatusCode = 400,
                 Content = response
