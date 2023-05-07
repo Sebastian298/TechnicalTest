@@ -1,11 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace TechnicalTest.Models.BusinessLogic
 {
     public class Prospect
     {
+        [JsonProperty(PropertyName = "Id")]
         public int Id { get; set; }
+        [JsonProperty(PropertyName ="Nombre")]
         public string Name { get; set; }
+        [JsonProperty(PropertyName ="Email")]
         public string Email { get; set; }
     }
 

@@ -1,14 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace TechnicalTest.Models.BusinessLogic
 {
     public class Interview
     {
+        [JsonProperty(PropertyName = "Id")]
         public int Id { get; set; }
+        [JsonProperty(PropertyName = "Vacante")]
         public string Vacancy { get; set; }
+        [JsonProperty(PropertyName ="Candidato")]
         public string Prospect { get; set; }
+        [JsonProperty(PropertyName ="Fecha Entrevista")]
         public DateTime InterviewDate { get; set; }
+        [JsonProperty(PropertyName ="Notas")]
         public string Notes { get; set; }
+        [JsonProperty(PropertyName ="Reclutado")]
         public bool Recruited { get; set; }
     }
 

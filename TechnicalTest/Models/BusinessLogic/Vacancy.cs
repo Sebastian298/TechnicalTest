@@ -1,12 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace TechnicalTest.Models.BusinessLogic
 {
     public class Vacancy
     {
+        [JsonProperty(PropertyName ="Id")]
         public int Id { get; set; }
+        [JsonProperty(PropertyName ="Area")]
         public string Area { get; set; }
+        [JsonProperty(PropertyName ="Salario")]
         public double Salary { get; set; }
+        [JsonProperty(PropertyName ="Activo")]
         public bool Active { get; set; }
     }
 
