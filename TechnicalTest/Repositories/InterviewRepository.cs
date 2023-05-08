@@ -102,7 +102,7 @@ namespace TechnicalTest.Repositories
                 }
                 return new GenericResponse<GenericCrud>()
                 {
-                    StatusCode = 201,
+                    StatusCode = 200,
                     Content = result.Results
                 };
             }
